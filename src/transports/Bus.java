@@ -6,10 +6,8 @@ import enums.TransportType;
 import exception.*;
 
 public class Bus extends Transport{
-    public Bus(String name, String color, Locations location, TransportType type) {
-        super(name, color, location, type);
-        this.setName("автобус");
-        this.setType(BUS);
+    public Bus(String color, Locations location) {
+        super("автобус", color, location, BUS);
     }
 
     public void changeDoorPosition() {

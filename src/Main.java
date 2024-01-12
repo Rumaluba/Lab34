@@ -15,7 +15,7 @@ public class Main {
         Human c = new Human("Гэдж", LAWN, BABY, MALE);
         Human d = new Human("Элли", NEARTHEHOUSE, CHILD, FEMALE);
         Human g = new Human("Норма", FREEEENVIRONMENT, ADULT, FEMALE);
-        Bus e = new Bus("апролрпа", "желтый", ROAD, BUS);
+        Bus e = new Bus("желтый", ROAD);
         Entity f = new Entity("гвалт ребячьих голосов", ROAD, MALE);
         Human h = new Human("Джуд", LAWN, ADULT, MALE);
         Day day = new Day() {
