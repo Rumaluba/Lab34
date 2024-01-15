@@ -1,7 +1,7 @@
 package exception;
 
-public class LocationException extends Exception{
-    public LocationException (String message) {
+public class LocationException extends Exception {
+    public LocationException(String message) {
         super(message);
     }
 }

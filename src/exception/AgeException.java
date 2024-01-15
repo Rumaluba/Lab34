@@ -1,7 +1,7 @@
 package exception;
 
-public class AgeException extends Exception{
-    public AgeException (String message) {
+public class AgeException extends Exception {
+    public AgeException(String message) {
         super(message);
     }
 }

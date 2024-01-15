@@ -7,9 +7,11 @@ public enum TransportType {
     CART("повозка"),
     WHEELBARROW("тачка");
     private final String name;
-    TransportType (String name) {
+
+    TransportType(String name) {
         this.name = name;
     }
+
     public String getNameType() {
         return name;
     }

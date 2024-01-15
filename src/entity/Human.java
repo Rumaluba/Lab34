@@ -1,82 +1,90 @@
-package humans;
+package entity;
 
-import entity.*;
+import enums.*;
 import exception.*;
-import enums.Age;
-import enums.Gender;
-import enums.Locations;
-import interfaces.Look;
+import interfaces.Drink;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static enums.Gender.*;
 
-
-public class Human extends Entity implements Look {
-    static int Count;
-    static int Count1;
+public class Human extends Entity implements Drink {
+    static boolean isPhoneDialogActive;
+    static boolean isOfflineDialogActive;
+    static ArrayList<Entity> humans;
 
     static {
-        Count = 0;
-        Count1 = 0;
+        isPhoneDialogActive = false;
+        isOfflineDialogActive = false;
+        humans = new ArrayList<>();
     }
 
-    public Human(String name, Locations location, Age age, Gender gender) throws GenderException {
-        super(name, location, age, gender);
-        if (gender == Gender.NEUTRAL) throw new GenderException("Человек не может быть среднего пола");
+    private Age age;
+    private final Gender gender;
+
+    public Human(String name, Locations location, Age age, Gender gender) throws RuntimeException {
+        super(name, location);
+        this.gender = gender;
+        this.age = age;
+        if (humans.contains(this)) throw new RuntimeException("Двух одинаковых людей не бывает");
+        humans.add(this);
     }
+
+    public Gender getGender() {
+        return gender;
+    }
+
 
     public void idea(String phrase) {
         System.out.printf(this.getGender() == MALE ? "%s " + "подумал: %s \n" : "%s " + "подумала: %s \n", this.getName(), phrase);
     }
 
     public void talkPhone(String phrase) throws DialogException {
-        if (Count != 0) {
+        if (isPhoneDialogActive) {
             throw new DialogException("Нельза начать новый диалог, пока старый не завершен!");
         } else
-            System.out.printf(this.getGender() == MALE ? "%s " + "сказал по телефону: %s \n" : "%s " + "сказала по телефону: %s \n", this.getName(), phrase);
-        Count++;
+            System.out.printf(this.gender == MALE ? "%s " + "сказал по телефону: %s \n" : "%s " + "сказала по телефону: %s \n", this.getName(), phrase);
+        isPhoneDialogActive = true;
     }
 
     public void continuePhoneDialog(String phrase) throws DialogException {
-        if (Count == 0) {
+        if (!isPhoneDialogActive) {
             throw new DialogException("Диалог только начался, а не продолжился!");
         } else {
-            System.out.printf(this.getGender() == MALE ? "%s " + "ответил по телефону: %s \n" : "%s " + "ответила по телефону: %s \n", this.getName(), phrase);
-            Count++;
+            System.out.printf(this.gender == MALE ? "%s " + "ответил по телефону: %s \n" : "%s " + "ответила по телефону: %s \n", this.getName(), phrase);
         }
     }
 
     public void endPhoneDialog() throws DialogException {
-        if (Count == 0) {
+        if (!isPhoneDialogActive) {
             throw new DialogException("Нельзя закончить неначавшийся диалог!");
         } else {
-            Count = 0;
+            isPhoneDialogActive = false;
         }
     }
 
     public void talk(String phrase) throws DialogException {
-        if (Count1 != 0) {
+        if (isOfflineDialogActive) {
             throw new DialogException("Нельза начать новый диалог, пока старый не завершен!");
         } else
-            System.out.printf(this.getGender() == MALE ? "%s " + "сказал: %s \n" : "%s " + "сказала: %s \n", this.getName(), phrase);
-        Count1++;
+            System.out.printf(this.gender == MALE ? "%s " + "сказал: %s \n" : "%s " + "сказала: %s \n", this.getName(), phrase);
+        isOfflineDialogActive = true;
     }
 
     public void continueDialog(String phrase) throws DialogException {
-        if (Count1 == 0) {
+        if (!isOfflineDialogActive) {
             throw new DialogException("Диалог только начался, а не продолжился!");
         } else {
-            System.out.printf(this.getGender() == MALE ? "%s " + "ответил: %s \n" : "%s " + "ответила: %s \n", this.getName(), phrase);
-            Count++;
+            System.out.printf(this.gender == MALE ? "%s " + "ответил: %s \n" : "%s " + "ответила: %s \n", this.getName(), phrase);
         }
     }
 
     public void endDialog() throws DialogException {
-        if (Count1 == 0) {
+        if (!isOfflineDialogActive) {
             throw new DialogException("Нельзя закончить неначавшийся диалог!");
         } else {
-            Count1 = 0;
+            isOfflineDialogActive = false;
         }
     }
 
@@ -91,8 +99,8 @@ public class Human extends Entity implements Look {
                     human.objects.add(this);
                 }
             }
-        } catch (LocationException l) {
-            System.out.println(l.getMessage());
+        } catch (LocationException lex) {
+            System.out.println(lex.getMessage());
         }
     }
 
@@ -124,32 +132,27 @@ public class Human extends Entity implements Look {
         }
         return str;
     }
-
     @Override
-    public void look() {
-        if (this.getGender() == MALE) {
-            System.out.printf("%s смотрел \n", this.getName());
-        } else {
-            System.out.printf("%s смотрела\n", this.getName());
-        }
+            public void drink(Drinkables drinkable, Volume volume) {
+        System.out.printf(this.gender == MALE ? "%s выпил %s %s\n" : "%s выпила %s %s \n", this.getName(), volume.getNameVolume(), drinkable.getNameDrinkables());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.getName(), this.getGender(), this.getLocation());
+        return Objects.hash(this.getName(), this.getGender());
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Human that = (Human) o;
-        return Objects.equals(this.getName(), that.getName()) && Objects.equals(this.getGender(), that.getGender()) && Objects.equals(this.getLocation(), that.getLocation());
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Human that = (Human) object;
+        return Objects.equals(this.getName(), that.getName()) && gender == that.getGender();
     }
 
     @Override
     public String toString() {
-        return String.format("Был создан человек по имени %s, %s, %s, в локации %s", this.getName(), age.getAgeName(), this.getGender().getGenderName(), this.getLocation().getLocName());
+        return String.format("Был создан человек по имени %s, %s, %s, в локации %s", this.getName(), age, gender.getGenderName(), this.getLocation().getLocName());
     }
 }
 

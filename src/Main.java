@@ -1,23 +1,26 @@
 import entity.Entity;
-import humans.*;
+import entity.Human;
+
 import static enums.Age.*;
 import static enums.Gender.*;
 import static enums.Locations.*;
-import static enums.TransportType.*;
+import static enums.Volume.*;
+import static enums.Drinkables.*;
+
 import exception.*;
 import interfaces.Day;
 import transports.*;
 
 public class Main {
-    public static void main(String args[]) throws LocationException,AgeException {
-        Father a = new Father("Луис", HOSPITAL, ADULT, MALE);
-        Mother b = new Mother("Рэчел", LAWN, ADULT, FEMALE);
-        Human c = new Human("Гэдж", LAWN, BABY, MALE);
-        Human d = new Human("Элли", NEARTHEHOUSE, CHILD, FEMALE);
-        Human g = new Human("Норма", FREEEENVIRONMENT, ADULT, FEMALE);
-        Bus e = new Bus("желтый", ROAD);
-        Entity f = new Entity("гвалт ребячьих голосов", ROAD, MALE);
-        Human h = new Human("Джуд", LAWN, ADULT, MALE);
+    public static void main(String args[]) throws LocationException, AgeException {
+        Human Louis = new Human("Луис", HOSPITAL, ADULT, MALE);
+        Human Rachel = new Human("Рэчел", LAWN, ADULT, FEMALE);
+        Human Gage = new Human("Гэдж", LAWN, BABY, MALE);
+        Human Elli = new Human("Элли", NEARTHEHOUSE, CHILD, FEMALE);
+        Human Norma = new Human("Норма", OTHER, ADULT, FEMALE);
+        Bus bus = new Bus("желтый", ROAD);
+        Entity voices = new Entity("гвалт ребячьих голосов", ROAD);
+        Human Jude = new Human("Джуд", LAWN, ADULT, MALE);
         Day day = new Day() {
             @Override
             public void start() {
@@ -29,43 +32,43 @@ public class Main {
                 System.out.println("День закончился");
             }
         };
-        e.objects.add(f);
+        bus.objects.add(voices);
         day.start();
-        a.setLocation(LAWN);
-        b.hug(c);
-        e.setLocation(NEARTHEHOUSE);
-        e.changeDoorPosition();
-        e.putAway(f);
-        f.setLocation(SOFTSEMPTEMBERAIR);
-        d.doSmth("оглянулась на родителей");
-        e.takeIn(d);
-        e.changeDoorPosition();
-        e.goAway();
-        b.doSmth("расплакалась");
-        a.talk("Ну не надо, ради Бога, это же только на полдня");
-        b.continueDialog("И этого достаточно");
-        b.endDialog();
-        a.hug(b);
-        c.doSmth("молчал");
-        a.idea("Мы ведь в его полной власти, и он это знает");
-        b.setLocation(KITCHEN);
-        a.breakHug(b);
-        a.breakHug(c);
-        c.breakHug(b);
-        a.waiting(d);
-        b.waiting(d);
-        a.drinkCoffee();
-        b.drinkCoffee();
-        a.setLocation(BACKROOM);
-        a.doSmth("перебирал бумажки");
-        b.doSmth("до абсурда рано начала рано готовить ланч");
-        b.endPhoneDialog();
-        b.talkPhone("Алло");
-        a.setLocation(KITCHEN);
-        a.idea(", что звонит учитель Элли сообщить, что девочка им не подходит и желудок публичного образования не может ее переварить");
-        g.continuePhoneDialog("Джуд снял остаток кукурузы, и они готовы ей поделиться");
-        a.doSmth("попенял на Джуда, что тот его позвал на помощь");
-        h.swear("А она все равно дерьмовая");
-        g.talk("Будь любезен, не выражаться так, пока я не уйду");
+        Louis.setLocation(LAWN);
+        Rachel.hug(Gage);
+        bus.setLocation(NEARTHEHOUSE);
+        bus.changeDoorPosition();
+        bus.putAway(voices);
+        voices.setLocation(SOFTSEMPTEMBERAIR);
+        Elli.doSmth("оглянулась на родителей");
+        bus.takeIn(Elli);
+        bus.changeDoorPosition();
+        bus.goAway();
+        Rachel.doSmth("расплакалась");
+        Louis.talk("Ну не надо, ради Бога, это же только на полдня");
+        Rachel.continueDialog("И этого достаточно");
+        Rachel.endDialog();
+        Louis.hug(Rachel);
+        Gage.doSmth("молчал");
+        Louis.idea("Мы ведь в его полной власти, и он это знает");
+        Rachel.setLocation(KITCHEN);
+        Louis.breakHug(Rachel);
+        Louis.breakHug(Gage);
+        Gage.breakHug(Rachel);
+        Louis.doSmth("ждал Элли");
+        Rachel.doSmth("ждала Элли");
+        Louis.drink(COFFEE, ALOT);
+        Rachel.drink(COFFEE, ALOT);
+        Louis.setLocation(BACKROOM);
+        Louis.doSmth("перебирал бумажки");
+        Rachel.doSmth("до абсурда рано начала рано готовить ланч");
+        Rachel.talkPhone("Алло");
+        Louis.setLocation(KITCHEN);
+        Louis.idea("звонит учитель Элли, сообщить, что девочка им не подходит и желудок публичного образования не может ее переварить");
+        Norma.continuePhoneDialog("Джуд снял остаток кукурузы, и они готовы ей поделиться");
+        Norma.endPhoneDialog();
+        Louis.doSmth("попенял на Джуда, что тот его позвал на помощь");
+        Jude.swear("А она все равно дерьмовая");
+        Norma.talk("Будь любезен, не выражаться так, пока я не уйду");
     }
 }

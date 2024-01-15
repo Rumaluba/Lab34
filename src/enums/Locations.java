@@ -9,11 +9,13 @@ public enum Locations {
     ROAD("Дорога"),
     SOFTSEMPTEMBERAIR("Мягкий сентябрьский воздух"),
 
-    FREEEENVIRONMENT("Неопределенное пространство");
-    public final String name;
+    OTHER("Неопределенное пространство");
+    private final String name;
+
     Locations(String name) {
         this.name = name;
     }
+
     public String getLocName() {
         return name;
     }
