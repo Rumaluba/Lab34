@@ -11,7 +11,7 @@ public class Entity extends Unfixed{
 
 
 @Override
-    protected void setLocation(World location) {
+    protected void setLocation(World location) throws LocationException {
         try {
             if (!(checkTransport() || checkHumans())) {
                 throw new LocationException("Нельзя поменять локацию не умея двигаться и не имея носителя!");

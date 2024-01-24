@@ -3,6 +3,7 @@ package entity;
 import enums.*;
 import exception.*;
 import interfaces.Drink;
+import interfaces.Take;
 import locations.World;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Objects;
 
 import static enums.Gender.*;
 
-public class Human extends Unfixed implements Drink {
+public class Human extends Unfixed implements Drink, Take {
     static boolean isPhoneDialogActive;
     static boolean isOfflineDialogActive;
     static private ArrayList<Human> humans;
