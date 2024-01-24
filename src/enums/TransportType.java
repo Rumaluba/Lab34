@@ -1,11 +1,7 @@
 package enums;
 
 public enum TransportType {
-    BUS("автобус"),
-    CAR("машина"),
-    TRUCK("грузовик"),
-    CART("повозка"),
-    WHEELBARROW("тачка");
+    BUS("автобус");
     private final String name;
 
     TransportType(String name) {

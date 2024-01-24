@@ -3,38 +3,36 @@ package entity;
 import enums.*;
 import exception.*;
 import interfaces.Drink;
+import locations.World;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 import static enums.Gender.*;
 
-public class Human extends Entity implements Drink {
+public class Human extends Unfixed implements Drink {
     static boolean isPhoneDialogActive;
     static boolean isOfflineDialogActive;
-    static ArrayList<Entity> humans;
+    static private ArrayList<Human> humans;
 
     static {
         isPhoneDialogActive = false;
         isOfflineDialogActive = false;
         humans = new ArrayList<>();
     }
-
     private Age age;
     private final Gender gender;
 
-    public Human(String name, Locations location, Age age, Gender gender) throws RuntimeException {
+    public Human(Age age, Gender gender, World location, String name) throws RuntimeException {
         super(name, location);
         this.gender = gender;
         this.age = age;
         if (humans.contains(this)) throw new RuntimeException("Двух одинаковых людей не бывает");
-        humans.add(this);
+        setHumans(this);
     }
-
     public Gender getGender() {
         return gender;
     }
-
 
     public void idea(String phrase) {
         System.out.printf(this.getGender() == MALE ? "%s " + "подумал: %s \n" : "%s " + "подумала: %s \n", this.getName(), phrase);
@@ -88,15 +86,15 @@ public class Human extends Entity implements Drink {
         }
     }
 
-    public void hug(Human human) throws LocationException {
+    public void hug(Human human) {
         try {
             if (this.getLocation() != human.getLocation())
                 throw new LocationException("Объекты, находящиеся в разных локациях не могут взаимодействовать!");
             else {
-                if (!objects.contains(human)) {
+                if (!getobj().contains(human)) {
                     System.out.printf("%s и %s обнялись\n", this.getName(), human.getName());
-                    objects.add(human);
-                    human.objects.add(this);
+                    getobj().add(human);
+                    human.getobj().add(this);
                 }
             }
         } catch (LocationException lex) {
@@ -105,10 +103,10 @@ public class Human extends Entity implements Drink {
     }
 
     public void breakHug(Human human) {
-        if (objects.contains(human)) {
+        if (getobj().contains(human)) {
             System.out.printf("%s и %s разорвали объятия\n", this.getName(), human.getName());
-            objects.remove(human);
-            human.objects.remove(this);
+            getobj().remove(human);
+            human.getobj().remove(this);
         }
     }
 
@@ -132,6 +130,32 @@ public class Human extends Entity implements Drink {
         }
         return str;
     }
+
+    public void setLocation(World location) {
+        try {
+            if (checkTransport()) {
+                throw new LocationException("Нельзя поменять локацию не выйдя из транспорта!");
+            } else {
+                setMobility(true);
+                this.location = location;
+                location.setOperands(this);
+                System.out.printf("объект %s сменил локацию на %s\n", getName(), location.getLocName());
+            }
+            for (int i = 0; i < getobj().size(); i++)
+                if (getobj().get(i).location != location) {
+                    getobj().get(i).setLocation(location);
+                }
+            setMobility(false);
+        } catch (LocationException l) {
+            System.out.println(l.getMessage());
+        }
+    }
+    public void take(Entity entity) {
+        System.out.printf("%s добавил себе в инвентарь %s\n", getName(), entity.getName());
+    }
+    public void setHumans(Human human) {
+        humans.add(human);
+    }
     @Override
             public void drink(Drinkables drinkable, Volume volume) {
         System.out.printf(this.gender == MALE ? "%s выпил %s %s\n" : "%s выпила %s %s \n", this.getName(), volume.getNameVolume(), drinkable.getNameDrinkables());
@@ -152,7 +176,7 @@ public class Human extends Entity implements Drink {
 
     @Override
     public String toString() {
-        return String.format("Был создан человек по имени %s, %s, %s, в локации %s", this.getName(), age, gender.getGenderName(), this.getLocation().getLocName());
+        return String.format("человек по имени %s, %s, %s, в локации %s", this.getName(),age.getAgeName(), gender.getGenderName(), this.getLocation().getLocName());
     }
 }
 

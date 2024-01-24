@@ -1,7 +1,7 @@
 package interfaces;
 
 public interface Day {
-    public void start();
+    void start();
 
-    public void end();
+    void end();
 }

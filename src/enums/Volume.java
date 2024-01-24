@@ -1,9 +1,7 @@
 package enums;
 
 public enum Volume {
-        ALITTLE("немного напитка"),
-        ALOT("немало напитка"),
-        SOME("некоторое количество напитка");
+        ALOT("немало напитка");
         private final String name;
 
         Volume(String name) {

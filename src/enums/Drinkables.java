@@ -1,10 +1,7 @@
 package enums;
 
 public enum Drinkables {
-    JUICE("сок"),
-    COFFEE("кофе"),
-    WATER("вода"),
-    ALCOHOL("алкоголь");
+    COFFEE("кофе");
     private final String name;
 
     Drinkables(String name) {

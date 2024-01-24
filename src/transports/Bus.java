@@ -1,19 +1,15 @@
 package transports;
-
-import enums.Locations;
-
-import static enums.Locations.*;
+import entity.Transport;
 import static enums.TransportType.*;
-
-import enums.TransportType;
 import exception.*;
+import locations.*;
 
 public class Bus extends Transport {
-    public Bus(String color, Locations location) {
-        super(color, BUS, location, false);
+    public Bus(String color, World location) {
+        super(color, BUS, location);
     }
 
-    public void changeDoorPosition() {
+    public void changeDoorPosition() throws LocationException{
         setDoorPosition(!this.getDoorPosition());
         if (this.getDoorPosition()) {
             System.out.printf("%s автобус открыл двери\n", this.getColor());
@@ -24,10 +20,15 @@ public class Bus extends Transport {
 
     @Override
     public void goAway() throws LocationException {
-        try {
-            this.setLocation(ROAD);
-        } catch (LocationException e) {
-            System.out.println(e.getMessage());
+        if (getDoorPosition()) {
+            throw new LocationException("Нельзя начать ехать с открытыми дверями");
+        }
+        else
+            try {
+                Road road = new Road();
+                this.setLocation(road);
+            } catch (LocationException e) {
+                System.out.println(e.getMessage());
         }
 
     }

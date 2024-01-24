@@ -3,7 +3,6 @@ package enums;
 public enum Age {
     BABY("младенец"),
     CHILD("ребенок"),
-    TEEN("подросток"),
     ADULT("взрослый"),
     OLD("пожилой");
     private final String name;
